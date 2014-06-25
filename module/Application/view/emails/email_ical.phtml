@@ -1,0 +1,34 @@
+Dear, <?php echo $fullname; ?>
+
+<p>You are invited to attend the event <?php echo $title; ?>. <br>
+The meeting event will start at<?php echo $start; ?> and ends at <?php echo $end; ?><br>
+View the meeting details and confirm your attendance.</p>
+
+<br>
+To confirm your attendance to the event please go to:  <?php echo $eventid ; ?> 
+<?php 
+header('Content-Type: text/calendar');
+header('Content-Disposition: attachment; filename="event.ical"');
+//header('Content-Length: ' . strlen($ical));
+header('Content-Length:100 ');
+header('Expires: 0');
+header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+header('Pragma: public');
+//echo $ical; 
+?> 
+
+
+<br><br>
+Best Regards, 
+
+
+
+
+
+
+
+
+
+
+
+

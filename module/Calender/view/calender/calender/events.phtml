@@ -1,0 +1,10 @@
+<?php
+foreach ($events as $event) {
+  $arr['title'] = $this->escapeHtml($event->title);
+  $arr['start'] = 'new Date(' . $event->start .')';
+  $arr['end'] = 'new Date(' . $event->end .')';
+  $arr['allDay'] = $this->escapeHtml($event->allDay);
+  $arr['id'] = $this->escapeHtml($event->id);
+  json_encode($arr);
+}
+?>

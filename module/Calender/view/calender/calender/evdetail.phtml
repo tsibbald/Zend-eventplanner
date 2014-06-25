@@ -1,0 +1,135 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Meeting Details 
+				</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+					<a href="#" class="wclose"><i class="icon-remove"></i></a>
+				</div>  
+				<div class="clearfix"></div>
+			</div>             
+			<div class="widget-content">
+				<div class="padd">
+					<div style="float:left; padding-right:16px;"></div>
+					<table width="100%">
+						<tr>
+							<td width="25%" valign="top">
+							<?php foreach ($owner as $ownerdata) : ?>
+
+								<?php echo '<p><strong>' . 'Creator:' . '</strong><p><div id="owner">' . $ownerdata->email . '</div><p><br>' ?>
+
+							<?php endforeach; ?>
+									<?php foreach ($data as $detail) : ?>
+										<?php $owner = $detail->userid; echo '<input type="hidden" id="eventid" value="' . $detail->id . '">'; ?>
+										<div><?php echo '<p><strong>' . 'Event id:' . '</strong><p><div id="eventid">' . $detail->id . '</div><p>' ?></div><br>
+										<div><?php echo '<p><strong>' . 'Event title: ' . '</strong><p><div id="title">' . $detail->title . '</div><p>' ?></div><br>
+										<div><?php echo '<p><strong>' . 'Event start: ' . '</strong><p><div id="start">' . $detail->start . '</div><p>' ?></div><br>
+										<div><?php echo '<p><strong>' . 'Event end: ' . '</strong><p><div id="end">' . $detail->end . '</div><p>' ?></div><br>
+							</td>
+							<?php endforeach; ?>
+							<td width="25%" valign="top">
+								<?php if($owner == $this->myuserid) : ?>
+								<p><strong>Delete event:</strong><p>'
+								<?php echo '<button type="button" id="delete" value="'.$detail->id.'" class="btn btn-danger">Delete</button>'; ?>
+								<?php endif; ?>
+							</td>
+							<td width="50%" valign="top">
+								<?php if($owner != $this->myuserid) : ?>
+									<p><strong>Attendingstatus:</strong></p>
+									<div class="make-switch has-switch" data-on="info" data-off="info">
+										<input type="checkbox" checked="">
+									</div>
+								<?php endif; ?>
+								<div class="widget">
+									<div class="widget-head">
+										<div class="pull-left">List with Attendees</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="widget-content attendinglist">
+										<table class="table table-striped table-bordered table-hover">
+											<thead>
+												<?php foreach ($this->guestlist as $guest) : // <-- change here! ?>
+													<?php echo '<tr><td>' . $guest->username  . '</td>'; ?>
+													<?php echo '<td>' . $guest->email  . '</td><tr>'; ?>
+												<?php endforeach; ?> <?php if(count($this->guestlist) == 0){ echo '<tr><td colspan="5">' .'No confirmed attendees ' . '</td></tr>'; } ?>
+											</thead>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</div>
+</div> 
+<?php if($owner == $this->myuserid) : ?>
+	<div class="col-md-6">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">	Click to invite	</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+				<div class="padd">
+					<select class="boxa" multiple="multiple" id="select1">
+						<?php foreach ($this->paginator as $member) : // <-- change here! ?>
+							<?php echo  '<option value="' . $member->user_id . '">'; ?>
+							<?php echo  $this->escapeHtml($member->user_id)  ;?>
+							<?php echo  $this->escapeHtml($member->username)  ;?>
+							<?php echo  ', '. $this->escapeHtml($member->email) ;?>
+						</option >
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<div class="widget-foot">
+				<form style="float: left" action="/social/filter" id="evdetailSearch" method="post">
+					<div>
+						<input type="hidden" name="id" />
+						<input type="text" class="form-control zoek" id="typeahead" data-provide="typeahead" placeholder="Search by.." name="term"  />
+						<select name="memberrow" class="form-control memberrow">
+							<option value="username">Username</option>
+							<option value="email">Email</option>
+						</select>
+						<input type="hidden" name="table" value="member">
+						<input type="hidden" name="field" value="username">
+						<input type="submit" class="btn btn-default" name="zoek" value="zoek" />
+					</div>
+				</form>
+				<button class="btn btn-default" id="add"><i class="icon-plus"></i> Add selected</button>
+			</div>
+		</div>			
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="widget">
+		<div class="widget-head">
+			<div class="pull-left">Invited</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="widget-content">
+			<div class="padd">
+				<select class="boxb" multiple="multiple" id="select2">
+					<?php foreach ($this->eventinvites as $invitee) : // <-- change here! ?>
+						<?php echo  '<option value="' . $invitee->user_id . '">'; ?>
+						<?php echo  $this->escapeHtml($invitee->username)  ;?>
+						<?php echo  ', '. $this->escapeHtml($invitee->email)  ;?>
+					</option >
+				<?php endforeach; ?>
+
+			</select>
+		</div>
+		<div class="widget-foot">
+			<button class="btn btn-default" id="remove"><i class="icon-minus"></i> Remove selected</button>
+			<button class="btn btn-default" id="confirm"><i class="icon-refresh"></i> Confirm invites</button>
+			<button class="btn btn-default" id="email"><i class="icon-envelope"></i> Send invitemail to selected</button>
+		</div>
+	</div>			
+</div>
+</div>
+</div>
+<?php endif; ?>
